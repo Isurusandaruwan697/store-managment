@@ -32,7 +32,7 @@ public class cust extends javax.swing.JFrame {
     public void tableload(){
         try {
             
-            String sql="SELECT name,address,tele,email FROM customer  ";
+            String sql="SELECT * FROM customer  ";
             pat=conn.prepareStatement(sql);
             rs=pat.executeQuery();
             jTable1.setModel(DbUtils.resultSetToTableModel(rs));
