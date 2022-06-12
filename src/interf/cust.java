@@ -112,7 +112,9 @@ public class cust extends javax.swing.JFrame {
             pat=conn.prepareStatement(sql);
             pat.execute();
             JOptionPane.showMessageDialog(null, "Delete sucess!");
+            reset();
             tableload();
+            clear();
         } catch (Exception e) {
             
              JOptionPane.showMessageDialog(null, e);
@@ -127,6 +129,33 @@ public class cust extends javax.swing.JFrame {
         jTextField1.setText("");
        jLabel11.setText("ID");
     }
+    
+    
+    public void reset(){
+        
+        String id=jLabel11.getText();
+        
+        try {
+           String sql="ALTER TABLE customer DROP id; ";
+
+            pat=conn.prepareStatement(sql);
+            pat.execute();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        try {
+            String sql="ALTER TABLE customer ADD  id BIGINT( 1 ) NOT NULL AUTO_INCREMENT FIRST ,ADD PRIMARY KEY (id)";
+            pat=conn.prepareStatement(sql);
+            pat.execute();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+    }
+    
+    
     
     
     
@@ -335,10 +364,10 @@ public class cust extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setBackground(new java.awt.Color(204, 204, 204));
         jTable1.setFont(new java.awt.Font("Sitka Banner", 0, 16)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
