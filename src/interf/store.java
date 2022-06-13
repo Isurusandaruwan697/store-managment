@@ -39,7 +39,7 @@ public class store extends javax.swing.JFrame {
         name=jTextField1.getText();
         brand=(String) jComboBox2.getSelectedItem();
         price=Integer.parseInt(jTextField3.getText());
-        count=(int) jSpinner1.getValue();
+        count=Integer.parseInt(jTextField2.getText());
          try {
             
             String sql="INSERT INTO store (name,brand,count,price)VALUES ('"+name+"','"+brand+"','"+count+"','"+price+"')";
@@ -83,7 +83,7 @@ public class store extends javax.swing.JFrame {
          jLabel11.setText(id);
          jTextField1.setText(name);
          jComboBox2.setSelectedItem(brand);
-         jLabel12.setText(count);//have error
+         jTextField2.setText(count);//have error
          jTextField3.setText(price);
     }
  
@@ -107,12 +107,13 @@ public class store extends javax.swing.JFrame {
         String name;
         String brand;
         int count;
-        String price;
+        int price;
         String id=jLabel11.getText();
         name=jTextField1.getText();
-        brand=(String) jComboBox2.getSelectedItem();//have error to fix
-        count=(int) jSpinner1.getValue();
-        price=jTextField3.getText();
+        brand=(String) jComboBox2.getSelectedItem();
+        count=Integer.parseInt(jTextField2.getText());
+        price=Integer.parseInt(jTextField3.getText());
+       
         
         try {
             
@@ -121,11 +122,63 @@ public class store extends javax.swing.JFrame {
             pat.execute();
             JOptionPane.showMessageDialog(null, "Update sucess!");
             tableload();
-            // clear();
+             clear();
         } catch (Exception e) {
             
             JOptionPane.showMessageDialog(null, e);
         }
+    }
+  
+   public void delete(){
+         
+        String id=jLabel11.getText();
+        
+        
+        try {
+            String sql="DELETE FROM store WHERE id='"+id+"' ";
+            pat=conn.prepareStatement(sql);
+            pat.execute();
+            JOptionPane.showMessageDialog(null, "Delete sucess!");
+            reset();
+            tableload();
+           clear();
+        } catch (Exception e) {
+            
+             JOptionPane.showMessageDialog(null, e);
+        }
+    }
+   public void clear(){
+        sbox.setText("");
+        jTextField1.setText("");
+        //jComboBox2.setText("");
+        jTextField2.setText("");
+       jTextField3.setText("");
+       jLabel11.setText("ID");
+    }
+    
+    
+    public void reset(){
+        
+        String id=jLabel11.getText();
+        
+        try {
+           String sql="ALTER TABLE store DROP id; ";
+
+            pat=conn.prepareStatement(sql);
+            pat.execute();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        try {
+            String sql="ALTER TABLE store ADD  id BIGINT( 1 ) NOT NULL AUTO_INCREMENT FIRST ,ADD PRIMARY KEY (id)";
+            pat=conn.prepareStatement(sql);
+            pat.execute();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
     }
     
     @SuppressWarnings("unchecked")
@@ -148,8 +201,8 @@ public class store extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
         jLabel12 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Table1 = new javax.swing.JTable();
@@ -243,12 +296,22 @@ public class store extends javax.swing.JFrame {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("DELETE");
         jLabel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("CLEAR");
         jLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 2));
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel8MouseClicked(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -291,14 +354,14 @@ public class store extends javax.swing.JFrame {
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jTextField2)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                                    .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(70, Short.MAX_VALUE))
         );
@@ -322,8 +385,8 @@ public class store extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(51, 51, 51)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -456,6 +519,14 @@ public class store extends javax.swing.JFrame {
          update();
     }//GEN-LAST:event_jLabel6MouseClicked
 
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+       delete();
+    }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+         clear();
+    }//GEN-LAST:event_jLabel8MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -510,8 +581,8 @@ public class store extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField sbox;
     // End of variables declaration//GEN-END:variables
